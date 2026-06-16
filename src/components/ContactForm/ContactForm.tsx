@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 import { Send, MessageCircle } from 'lucide-react';
 import styles from './ContactForm.module.css';
@@ -26,7 +27,13 @@ export const ContactForm: React.FC = () => {
   return (
     <section className={styles.sectionContainer}>
       <div className={styles.container}>
-        <div className={styles.textColumn}>
+        <motion.div 
+          className={styles.textColumn}
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className={styles.title}>Vamos transformar seu <span className="text-gradient">ambiente?</span></h2>
           <p className={styles.subtitle}>
             Preencha os dados abaixo ou fale diretamente conosco pelo WhatsApp para um atendimento imediato e exclusivo.
@@ -36,9 +43,15 @@ export const ContactForm: React.FC = () => {
             <MessageCircle size={24} />
             Falar pelo WhatsApp
           </button>
-        </div>
+        </motion.div>
 
-        <div className={styles.formColumn}>
+        <motion.div 
+          className={styles.formColumn}
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
               <label>Nome Completo</label>
@@ -72,7 +85,7 @@ export const ContactForm: React.FC = () => {
               Solicitar Orçamento
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

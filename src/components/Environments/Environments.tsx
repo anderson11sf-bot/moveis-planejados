@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { ImageLoader } from '../ImageLoader/ImageLoader';
 import styles from './Environments.module.css';
 
@@ -41,6 +41,21 @@ export const Environments: React.FC = () => {
 
   const activeCategory = categories.find(c => c.id === activeTab)!;
 
+  const handleDragEnd = (e: any, { offset, velocity }: PanInfo) => {
+    const swipe = offset.x;
+    if (swipe < -50) {
+      // Swipe left (next)
+      const currentIndex = categories.findIndex(c => c.id === activeTab);
+      const nextIndex = (currentIndex + 1) % categories.length;
+      setActiveTab(categories[nextIndex].id);
+    } else if (swipe > 50) {
+      // Swipe right (prev)
+      const currentIndex = categories.findIndex(c => c.id === activeTab);
+      const prevIndex = currentIndex === 0 ? categories.length - 1 : currentIndex - 1;
+      setActiveTab(categories[prevIndex].id);
+    }
+  };
+
   return (
     <section className={styles.container} id="ambientes">
       <div className={styles.header}>
@@ -72,11 +87,15 @@ export const Environments: React.FC = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               className={styles.imageWrapper}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
             >
               <ImageLoader src={activeCategory.image} alt={activeCategory.label} className={styles.image} wrapperClassName={styles.imageWrapper} />
               

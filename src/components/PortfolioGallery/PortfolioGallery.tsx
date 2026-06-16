@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ImageLoader } from '../ImageLoader/ImageLoader';
 import styles from './PortfolioGallery.module.css';
 
@@ -47,9 +48,13 @@ export const PortfolioGallery: React.FC = () => {
         {projects.map((project) => {
           // Add parallax effect (alternating columns)
           return (
-            <div 
+            <motion.div 
               key={project.id} 
               className={`${styles.gridItem} ${project.styleClass}`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.6, delay: project.id * 0.1 }}
             >
               <div className={styles.imageWrapper}>
                 <ImageLoader src={project.image} alt={project.title} className={styles.image} wrapperClassName={styles.imageWrapper} />
@@ -57,7 +62,7 @@ export const PortfolioGallery: React.FC = () => {
                   <h3 className={styles.projectTitle}>{project.title}</h3>
                 </div>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
