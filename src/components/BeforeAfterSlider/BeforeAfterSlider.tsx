@@ -12,13 +12,16 @@ interface BeforeAfterSliderProps {
 export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afterImage }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  const x = useMotionValue(0);
+  const [sliderPosition, setSliderPosition] = useState(50);
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSliderPosition(Number(e.target.value));
+  };
 
   useEffect(() => {
     if (containerRef.current) {
       const width = containerRef.current.getBoundingClientRect().width;
       setContainerWidth(width);
-      x.set(width / 2); // Start in the middle
     }
 
     const handleResize = () => {
@@ -29,9 +32,9 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImag
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [x]);
+  }, []);
 
-  const clipPath = useTransform(x, (val) => `inset(0 ${containerWidth - val}px 0 0)`);
+  const clipPath = `${sliderPosition}%`;
 
   return (
     <section className={styles.sectionContainer}>
@@ -64,27 +67,39 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImag
         </div>
 
         {/* After Image (Clipped) */}
-        <motion.div className={styles.imageWrapperAfter} style={{ clipPath }}>
+        <div className={styles.imageWrapperAfter} style={{ clipPath: `inset(0 0 0 ${clipPath})` }}>
           <ImageLoader src={afterImage} alt="Depois" className={styles.image} wrapperClassName={styles.imageWrapperAfter} draggable="false" />
           <span className={styles.labelAfter}>Depois</span>
-        </motion.div>
+        </div>
 
-        {/* Drag Handle */}
-        <motion.div 
-          className={styles.handle}
-          style={{ x }}
-          drag="x"
-          dragConstraints={{ left: 0, right: containerWidth }}
-          dragElastic={0}
-          dragMomentum={false}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+        {/* Native Range Input Handle for 100% bug-free mobile swipe */}
+        <input 
+          type="range"
+          min="0"
+          max="100"
+          value={sliderPosition}
+          onChange={handleSliderChange}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            opacity: 0,
+            cursor: 'ew-resize',
+            zIndex: 20
+          }}
+        />
+
+        <div 
+          className={styles.sliderHandle}
+          style={{ left: `${sliderPosition}%` }}
         >
           <div className={styles.handleLine}></div>
-          <div className={styles.handleIcon}>
-            <ArrowLeftRight size={20} color="#050505" />
+          <div className={styles.handleButton}>
+            <ArrowLeftRight size={16} color="#050505" />
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
