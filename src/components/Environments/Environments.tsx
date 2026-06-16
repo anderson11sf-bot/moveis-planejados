@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ImageLoader } from '../ImageLoader/ImageLoader';
 import styles from './Environments.module.css';
@@ -38,6 +38,17 @@ const categories = [
 
 export const Environments: React.FC = () => {
   const [activeTab, setActiveTab] = useState(categories[0].id);
+  const activeTabRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (activeTabRef.current) {
+      activeTabRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }, [activeTab]);
 
   const activeCategory = categories.find(c => c.id === activeTab)!;
 
@@ -68,6 +79,7 @@ export const Environments: React.FC = () => {
           {categories.map((cat) => (
             <button
               key={cat.id}
+              ref={activeTab === cat.id ? activeTabRef : null}
               className={`${styles.tabBtn} ${activeTab === cat.id ? styles.activeTab : ''}`}
               onClick={() => setActiveTab(cat.id)}
             >

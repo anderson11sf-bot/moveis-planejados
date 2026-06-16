@@ -53,7 +53,7 @@ export const PortfolioGallery: React.FC = () => {
               className={`${styles.gridItem} ${project.styleClass}`}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
+              viewport={{ once: false, margin: "-10%" }}
               transition={{ duration: 0.6, delay: project.id * 0.1 }}
             >
               <div className={styles.imageWrapper}>

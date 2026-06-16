@@ -31,7 +31,7 @@ export const ContactForm: React.FC = () => {
           className={styles.textColumn}
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.6 }}
         >
           <h2 className={styles.title}>Vamos transformar seu <span className="text-gradient">ambiente?</span></h2>
@@ -49,7 +49,7 @@ export const ContactForm: React.FC = () => {
           className={styles.formColumn}
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <form className={styles.form} onSubmit={handleSubmit}>
