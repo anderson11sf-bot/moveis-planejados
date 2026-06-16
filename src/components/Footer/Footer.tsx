@@ -25,8 +25,8 @@ export const Footer: React.FC = () => {
               <span>contato@moveisplanejados.com.br</span>
             </li>
             <li>
-              <a href="https://instagram.com/sant00z" target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>
-                <span>@sant00z</span>
+              <a href="https://instagram.com/sant88z" target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>
+                <span>@sant88z</span>
               </a>
             </li>
           </ul>

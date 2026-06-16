@@ -4,7 +4,7 @@ import styles from './FloatingInstagram.module.css';
 
 export const FloatingInstagram: React.FC = () => {
   const handleClick = () => {
-    window.open('https://instagram.com/sant00z', '_blank', 'noopener,noreferrer');
+    window.open('https://instagram.com/sant88z', '_blank', 'noopener,noreferrer');
   };
 
   return (
