@@ -25,7 +25,9 @@ function App() {
 
     const updateVideo = () => {
       if (!videoRef.current || duration <= 0) return;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      // Use clientHeight instead of innerHeight to prevent massive jumps when mobile URL bar hides/shows!
+      const stableHeight = document.documentElement.clientHeight;
+      const maxScroll = document.documentElement.scrollHeight - stableHeight;
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
       targetTime = Math.max(0, Math.min(1, progress)) * duration;
     };
