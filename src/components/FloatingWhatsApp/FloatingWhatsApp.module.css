@@ -1,0 +1,64 @@
+.whatsappWrapper {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  cursor: grab;
+  touch-action: none; /* Crucial for mobile dragging */
+}
+
+.iconContainer {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(8px);
+}
+
+.ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  background-color: rgba(37, 211, 102, 0.4);
+  border-radius: 50%;
+  z-index: 1;
+  animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .whatsappWrapper {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+  
+  .iconContainer {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ripple {
+    width: 56px;
+    height: 56px;
+  }
+}

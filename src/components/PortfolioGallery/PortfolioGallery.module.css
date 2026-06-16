@@ -1,0 +1,116 @@
+.sectionContainer {
+  padding: var(--space-xl) var(--space-sm);
+  background-color: rgba(5, 5, 5, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.title {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-auto-rows: 300px;
+  grid-auto-flow: dense;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.projectItem {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transform-origin: center;
+}
+
+.tall {
+  grid-row: span 2;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.regular {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0) 50%);
+  opacity: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 2rem;
+  transition: opacity 0.4s ease;
+}
+
+.projectItem:hover .image {
+  transform: scale(1.05);
+}
+
+.projectItem:hover .overlay {
+  opacity: 1;
+}
+
+.projectTitle {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-family: var(--font-serif);
+  transform: translateY(20px);
+  transition: transform 0.4s ease;
+}
+
+.projectItem:hover .projectTitle {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .galleryGrid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 250px;
+    gap: 1.5rem;
+  }
+  
+  .tall, .wide, .regular {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  .overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0) 80%);
+  }
+  
+  .projectTitle {
+    transform: translateY(0);
+    font-size: 1.3rem;
+  }
+}
