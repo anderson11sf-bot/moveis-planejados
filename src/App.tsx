@@ -88,7 +88,7 @@ function App() {
 
       <Hero />
       
-      <div ref={mainContentRef} style={{ position: 'relative', zIndex: 5 }}>
+      <div ref={mainContentRef} style={{ position: 'relative', zIndex: 5, overflowX: 'hidden' }}>
         <Environments />
         
         <BeforeAfterSlider 
