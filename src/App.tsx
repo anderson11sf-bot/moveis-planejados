@@ -12,47 +12,7 @@ import { Footer } from './components/Footer/Footer';
 function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
-  const [duration, setDuration] = useState(0);
-
-  // Native pure scroll tracking with 0 artificial physics
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-
-    let ticking = false;
-
-    const updateVideo = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (!videoRef.current || duration <= 0) {
-            ticking = false;
-            return;
-          }
-          const stableHeight = document.documentElement.clientHeight;
-          const maxScroll = document.documentElement.scrollHeight - stableHeight;
-          const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-          const targetTime = Math.max(0, Math.min(1, progress)) * duration;
-          
-          videoRef.current.currentTime = targetTime;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', updateVideo, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', updateVideo);
-    };
-  }, [duration]);
-
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.duration);
-    }
-  };
+  // No artificial scroll tracking. The video will just play normally in the background.
 
   return (
     <>
@@ -64,9 +24,9 @@ function App() {
           ref={videoRef}
           src="/assets/videos/scroll-bg-optimized.mp4"
           muted
+          autoPlay
+          loop
           playsInline
-          preload="metadata"
-          onLoadedMetadata={handleLoadedMetadata}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
         {/* Dark Glass Overlay (Blur removed to prevent GPU throttling during scroll on mobile) */}

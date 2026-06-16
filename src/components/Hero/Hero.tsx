@@ -4,19 +4,8 @@ import styles from './Hero.module.css';
 
 export const Hero: React.FC = () => {
   const { scrollYProgress } = useScroll();
-  // Disable parallax on mobile by checking screen size in a state, or simply use CSS/media queries.
-  // Alternatively, map transforms to 0 on mobile.
-  const [isMobile, setIsMobile] = React.useState(false);
-  
-  React.useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const yText = useTransform(scrollYProgress, [0, 0.5], [0, isMobile ? 0 : 150]);
-  const opacityText = useTransform(scrollYProgress, [0, 0.3], [1, isMobile ? 1 : 0]);
+  const yText = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
+  const opacityText = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
   return (
     <div className={styles.heroContainer}>
