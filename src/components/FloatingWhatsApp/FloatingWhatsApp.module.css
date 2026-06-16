@@ -3,8 +3,7 @@
   bottom: 2rem;
   right: 2rem;
   z-index: 9999;
-  cursor: grab;
-  touch-action: none; /* Crucial for mobile dragging */
+  cursor: pointer;
 }
 
 .iconContainer {
