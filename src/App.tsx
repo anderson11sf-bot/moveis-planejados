@@ -27,7 +27,7 @@ function App() {
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      syncTouch: true, // Crucial: Hijack mobile touch to bypass browser video throttling
+      syncTouch: false, // Restore perfect native scroll on mobile! Video is now optimized and doesn't need touch hijacking.
       touchMultiplier: 2.5,
     });
 
