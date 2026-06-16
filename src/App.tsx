@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 
 import { Hero } from './components/Hero/Hero';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp/FloatingWhatsApp';
