@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ImageLoader } from '../ImageLoader/ImageLoader';
 import styles from './Environments.module.css';
 
@@ -41,7 +41,7 @@ export const Environments: React.FC = () => {
 
   const activeCategory = categories.find(c => c.id === activeTab)!;
 
-  const handleDragEnd = (e: any, { offset, velocity }: PanInfo) => {
+  const handleDragEnd = (_e: any, { offset, velocity: _velocity }: PanInfo) => {
     const swipe = offset.x;
     if (swipe < -50) {
       // Swipe left (next)
