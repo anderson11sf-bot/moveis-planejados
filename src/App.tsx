@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import Lenis from 'lenis';
 
 import { Hero } from './components/Hero/Hero';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp/FloatingWhatsApp';
@@ -15,39 +14,44 @@ function App() {
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [duration, setDuration] = useState(0);
 
-  // Lenis Hijacked Scroll to guarantee frame-perfect video sync
+  // Native pure scroll tracking with 0 artificial physics
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.pause();
     }
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      syncTouch: false, // Restore perfect native scroll on mobile! Video is now optimized and doesn't need touch hijacking.
-      touchMultiplier: 2.5,
-    });
+    let lastScrollY = -1;
 
-    lenis.on('scroll', (e: any) => {
+    const updateVideo = () => {
       if (!videoRef.current || duration <= 0) return;
-      const progress = e.progress; // Direct 0 to 1 progress from Lenis
-      const safeProgress = Math.max(0, Math.min(1, progress));
-      videoRef.current.currentTime = safeProgress * duration;
-    });
-
-    let rafId: number;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
+      
+      const scrollY = window.scrollY;
+      if (scrollY !== lastScrollY) {
+        lastScrollY = scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
+        
+        const safeProgress = Math.max(0, Math.min(1, progress));
+        videoRef.current.currentTime = safeProgress * duration;
+      }
     };
 
-    rafId = requestAnimationFrame(raf);
+    window.addEventListener('scroll', updateVideo, { passive: true });
+    window.addEventListener('touchmove', updateVideo, { passive: true });
+    window.addEventListener('wheel', updateVideo, { passive: true });
+
+    let rafId: number;
+    const loop = () => {
+      updateVideo();
+      rafId = requestAnimationFrame(loop);
+    };
+
+    rafId = requestAnimationFrame(loop);
 
     return () => {
-      lenis.destroy();
+      window.removeEventListener('scroll', updateVideo);
+      window.removeEventListener('touchmove', updateVideo);
+      window.removeEventListener('wheel', updateVideo);
       cancelAnimationFrame(rafId);
     };
   }, [duration]);
