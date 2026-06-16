@@ -20,15 +20,25 @@ function App() {
       videoRef.current.pause();
     }
 
+    let ticking = false;
+
     const updateVideo = () => {
-      if (!videoRef.current || duration <= 0) return;
-      const stableHeight = document.documentElement.clientHeight;
-      const maxScroll = document.documentElement.scrollHeight - stableHeight;
-      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-      const targetTime = Math.max(0, Math.min(1, progress)) * duration;
-      
-      // Update directly without any artificial lerp/momentum
-      videoRef.current.currentTime = targetTime;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!videoRef.current || duration <= 0) {
+            ticking = false;
+            return;
+          }
+          const stableHeight = document.documentElement.clientHeight;
+          const maxScroll = document.documentElement.scrollHeight - stableHeight;
+          const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+          const targetTime = Math.max(0, Math.min(1, progress)) * duration;
+          
+          videoRef.current.currentTime = targetTime;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', updateVideo, { passive: true });
@@ -48,8 +58,7 @@ function App() {
     <>
       {/* GLOBAL FIXED BACKGROUND VIDEO */}
       <div style={{ 
-        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -2,
-        willChange: 'transform'
+        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -2
       }}>
         <video
           ref={videoRef}
