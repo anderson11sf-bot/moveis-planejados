@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 
 import { Hero } from './components/Hero/Hero';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp/FloatingWhatsApp';
+import { FloatingInstagram } from './components/FloatingInstagram/FloatingInstagram';
 import { Environments } from './components/Environments/Environments';
 import { BeforeAfterSlider } from './components/BeforeAfterSlider/BeforeAfterSlider';
 import { ProcessTimeline } from './components/ProcessTimeline/ProcessTimeline';
@@ -94,6 +95,7 @@ function App() {
         <Footer />
       </div>
       
+      <FloatingInstagram />
       <FloatingWhatsApp />
     </>
   );
