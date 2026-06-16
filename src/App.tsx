@@ -20,29 +20,29 @@ function App() {
       videoRef.current.pause();
     }
 
-    let lastScrollY = -1;
+    let targetTime = 0;
+    let currentTimeValue = 0;
 
     const updateVideo = () => {
       if (!videoRef.current || duration <= 0) return;
-      
-      const scrollY = window.scrollY;
-      if (scrollY !== lastScrollY) {
-        lastScrollY = scrollY;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
-        
-        const safeProgress = Math.max(0, Math.min(1, progress));
-        videoRef.current.currentTime = safeProgress * duration;
-      }
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      targetTime = Math.max(0, Math.min(1, progress)) * duration;
     };
 
     window.addEventListener('scroll', updateVideo, { passive: true });
-    window.addEventListener('touchmove', updateVideo, { passive: true });
-    window.addEventListener('wheel', updateVideo, { passive: true });
 
     let rafId: number;
     const loop = () => {
-      updateVideo();
+      if (videoRef.current && duration > 0) {
+        // Fast Lerp (30% per frame) to stabilize micro-jitters and fix "hyper-sensitivity"
+        currentTimeValue += (targetTime - currentTimeValue) * 0.3;
+        
+        // Prevent DOM spam by only updating when change is > 0.01s
+        if (Math.abs(currentTimeValue - videoRef.current.currentTime) > 0.01) {
+          videoRef.current.currentTime = currentTimeValue;
+        }
+      }
       rafId = requestAnimationFrame(loop);
     };
 
@@ -50,8 +50,6 @@ function App() {
 
     return () => {
       window.removeEventListener('scroll', updateVideo);
-      window.removeEventListener('touchmove', updateVideo);
-      window.removeEventListener('wheel', updateVideo);
       cancelAnimationFrame(rafId);
     };
   }, [duration]);
