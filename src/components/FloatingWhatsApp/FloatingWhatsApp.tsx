@@ -14,9 +14,6 @@ export const FloatingWhatsApp: React.FC = () => {
   return (
     <motion.div
       className={styles.whatsappWrapper}
-      drag
-      dragMomentum={false}
-      whileDrag={{ scale: 1.1, cursor: "grabbing" }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleClick}
