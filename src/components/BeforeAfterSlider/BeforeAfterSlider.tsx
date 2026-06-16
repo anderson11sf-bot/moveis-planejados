@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowLeftRight } from 'lucide-react';
 import { ImageLoader } from '../ImageLoader/ImageLoader';
 import styles from './BeforeAfterSlider.module.css';
@@ -11,7 +11,6 @@ interface BeforeAfterSliderProps {
 
 export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImage, afterImage }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,19 +18,7 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ beforeImag
   };
 
   useEffect(() => {
-    if (containerRef.current) {
-      const width = containerRef.current.getBoundingClientRect().width;
-      setContainerWidth(width);
-    }
-
-    const handleResize = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.getBoundingClientRect().width);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    // Keep empty dependency to maintain logic structure
   }, []);
 
   const clipPath = `${sliderPosition}%`;
